@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import passport from 'passport';
 import { lawerController } from '../controllers/lawers.controller.js';
+import { ViewsController } from '../controllers/views.controller.js'
 import utils from '../utils.js';
 import upload from '../middlewares/upload.js';
 
@@ -21,6 +22,10 @@ const {
     updatelawer,
     requestPasswordResetFromLogin,
 } = new lawerController();
+
+const {
+    renderLogin,
+} = new ViewsController()
 
 /**
  * @swagger
@@ -80,6 +85,8 @@ lawersRouter.post('/signup', passport.authenticate('signup', {
  *         description: Credenciales inválidas
  */
 lawersRouter.post('/login', postLogin);
+
+lawersRouter.get('/login', renderLogin);
 
 /**
  * @swagger
