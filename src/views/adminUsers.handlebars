@@ -1,0 +1,586 @@
+<style>
+  body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    background-color: #D9FFFF;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .table-container {
+    overflow-x: auto;
+    /* Permite que la tabla se desplace horizontalmente en pantallas pequeñas */
+  }
+
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    white-space: nowrap;
+}
+
+ th, td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    vertical-align: middle;
+    height: 60px;
+}
+
+  th {
+    background-color: #fff;
+    color: #333;
+    font-weight: bold;
+  }
+
+  td {
+    background-color: #f9f9f9;
+  }
+
+  /* Estilo del input de búsqueda */
+  #search {
+    width: 100%;
+    padding: 8px;
+    /* Reducido para un aspecto más estético */
+    margin-bottom: 20px;
+    border: 2px solid #ff6456;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #333;
+    transition: border-color 0.3s;
+    /* Añadido para un efecto al enfocar */
+  }
+
+  #search:focus {
+    border-color: #ff4c3b;
+    /* Cambia el borde al enfocar */
+  }
+
+  /* Estilo del selector de orden */
+  select {
+    padding: 10px;
+    margin: 0 10px;
+    border: 2px solid #ff6456;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #333;
+  }
+
+  /* Estilos del botón */
+  .btn {
+    padding: 8px 16px;
+    /* Reducido para un tamaño más pequeño */
+    font-size: 14px;
+    /* Tamaño de fuente más pequeño */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .btn-primary {
+    background-color: #5bc0de;
+    /* Color celeste */
+    color: white;
+    font-weight: bold;
+  }
+
+  .btn-primary:hover {
+    background-color: #31b0d5;
+    /* Color más oscuro al pasar el ratón */
+  }
+
+  .btn-danger {
+    background-color: #f56363;
+    /* Rojo más claro */
+    color: white;
+  }
+
+  .btn-danger:hover {
+    background-color: #f05555;
+    /* Color más oscuro al pasar el ratón */
+  }
+
+  button.btn-success,
+  select {
+    margin-top: 15px;
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+
+  .pagination a {
+    color: #333;
+    padding: 8px 16px;
+    text-decoration: none;
+    border: 1px solid #ccc;
+    margin: 0 5px;
+    margin-top: 1%;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  .pagination a:hover {
+    background-color: #ff6456;
+    color: #fff;
+  }
+
+  .btn-add {
+    margin-top: 2%;
+    margin-bottom: 2%;
+  }
+
+  .navbarDash {
+    background-color: #fffefe;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 3%;
+  }
+
+  .navbar-leftDash {
+    display: flex;
+    align-items: center;
+  }
+
+  .navbar-logoDash img {
+    width: 50px;
+    /* Ajusta el tamaño del logo según sea necesario */
+    height: auto;
+    margin-right: 20px;
+  }
+
+  .navbar-itemDash {
+    margin-right: 15px;
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+  }
+
+  .navbar-itemDash:last-child {
+    margin-right: 0;
+  }
+
+  /* Estilos para los modales */
+  .modal-content {
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  .modal-header {
+    background-color: #5bc0de;
+    color: white;
+    border-bottom: none;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+
+  .modal-first_name {
+    font-weight: bold;
+  }
+
+  .modal-footer {
+    border-top: none;
+  }
+
+  .modal-body {
+    padding: 20px;
+    background-color: #f9f9f9;
+  }
+
+  /* Estilo para los inputs del formulario */
+  .form-control,
+  .form-label,
+  select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+  }
+
+  .form-control:focus,
+  select:focus {
+    border-color: #5bc0de;
+    outline: none;
+  }
+
+  /* Botones del formulario */
+  .btn-primary,
+  .btn-secondary {
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+
+  .btn-primary {
+    background-color: #5bc0de;
+    border: none;
+  }
+
+  .btn-primary:hover {
+    background-color: #31b0d5;
+  }
+
+  .btn-secondary {
+    background-color: #ddd;
+    color: #333;
+  }
+
+  .btn-secondary:hover {
+    background-color: #bbb;
+  }
+  @media (max-width: 768px) {
+    th, td {
+        padding: 8px;
+        font-size: 12px;  /* Reducir tamaño de fuente en pantallas pequeñas */
+        height: auto;  /* Ajustar altura de las celdas */
+    }
+
+    .table-container {
+        overflow-x: auto;  /* Permitir scroll horizontal */
+    }
+
+    .table {
+        white-space: nowrap;  /* Evitar que el texto se desborde */
+        display: block;  /* Para manejar mejor el scroll horizontal */
+    }
+
+    .navbarDash {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+</style>
+
+<script>
+  function searchByFirst_name() {
+    const searchInput = document.getElementById('search').value.toLowerCase();
+    const rows = document.querySelectorAll('tbody tr');
+
+    rows.forEach(row => {
+      const first_name = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+      row.style.display = first_name.includes(searchInput) ? '' : 'none';
+    });
+  }
+
+  function sortByColumn(columnIndex) {
+    const rows = Array.from(document.querySelectorAll('tbody tr'));
+    const sortedRows = rows.sort((a, b) => {
+      const aText = a.querySelector(`td:nth-child(${columnIndex})`).textContent;
+      const bText = b.querySelector(`td:nth-child(${columnIndex})`).textContent;
+      return aText.localeCompare(bText, undefined, { numeric: true });
+    });
+
+    const tbody = document.querySelector('tbody');
+    tbody.innerHTML = '';
+    sortedRows.forEach(row => tbody.appendChild(row));
+  }
+
+  function openEditModal(lawer) {
+    document.getElementById('lawerId').value = lawer._id; // Verifica que lawer._id es correcto
+    document.getElementById('lawerFirst_name').value = lawer.first_name;
+    document.getElementById('lawerLast_name').value = lawer.last_name;
+    document.getElementById('lawerEmail').value = lawer.email;
+    document.getElementById('lawerAge').value = lawer.age;
+    document.getElementById('lawerRole').value = lawer.role;
+
+
+    var modal = new bootstrap.Modal(document.getElementById('editlawerModal'));
+    modal.show();
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('editlawerForm').addEventListener('submit', async function (event) {
+      event.preventDefault();
+
+      const formData = new FormData(this); // Capturamos los datos del formulario, incluyendo la imagen
+      const lawerId = document.getElementById('lawerId').value;
+
+      try {
+        const response = await fetch(`/admin/lawers/update/${lawerId}`, {
+          method: 'PUT',
+          body: formData,
+        });
+
+        if (response.ok) {
+          Swal.fire('lawer Actualizado', 'El lawer ha sido actualizado correctamente.', 'success');
+          location.reload(); // Recargamos la página para ver los cambios actualizados
+        } else {
+          const error = await response.json();
+          Swal.fire('Error', error.message, 'error');
+        }
+      } catch (error) {
+        Swal.fire('Error', 'Ocurrió un problema al actualizar el lawer.', 'error');
+      }
+    });
+  });
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('success') === 'true') {
+      // Mostrar SweetAlert
+      Swal.fire({
+        icon: 'success',
+        title: 'Usuario creado',
+        text: 'El usuario ha sido creado correctamente.',
+        confirmButtonText: 'OK'
+      }).then(() => {
+        // Quitar el parámetro de la URL para evitar que el SweetAlert se muestre en recargas futuras
+        window.history.replaceState(null, null, window.location.pathname);
+      });
+    }
+
+
+
+  });
+  async function deletelawer(event, lawerId) {
+    event.preventDefault(); // Prevenir comportamiento predeterminado
+    const { value: result } = await Swal.fire({
+      first_name: '¿Estás seguro?',
+      text: "¡No podrás recuperar este lawer!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, eliminarlo!',
+      cancelButtonText: 'Cancelar'
+    });
+
+    if (result) {
+      const response = await fetch(`/admin/lawers/delete/${lawerId}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        Swal.fire(
+          'Eliminado!',
+          'El lawer ha sido eliminado.',
+          'success'
+        );
+        location.reload(); // Recargar la página o actualizar la tabla de lawers
+      } else {
+        const error = await response.json();
+        Swal.fire('Error', error.message, 'error');
+      }
+    }
+  }
+
+  async function resetPassword(event, lawerId) {
+    event.preventDefault(); // Prevenir comportamiento predeterminado
+    const { value: result } = await Swal.fire({
+      text: "¡Se enviara un mail para resetear la contraseña!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, enviar!',
+      cancelButtonText: 'Cancelar'
+    });
+
+    if (result) {
+      const response = await fetch(`/api/sessions/password-reset-request`, {
+        method: 'POST',
+      });
+
+      if (response.ok) {
+        Swal.fire(
+          'Email enviado!',
+          '',
+          'success'
+        );
+        location.reload(); // Recargar la página o actualizar la tabla de lawers
+      } else {
+        const error = await response.json();
+        Swal.fire('Error', error.message, 'error');
+      }
+    }
+  }
+
+
+</script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+<div class="navbarDash">
+  <div class="navbar-leftDash">
+    <div class="navbar-logoDash">
+      <img src="/assets/conf.png" alt="Logo">
+    </div>
+    <a href="/admin" class="navbar-itemDash">Dashboard</a>
+    <a href="/admin/lawers?page=1" class="navbar-itemDash">Usuarios</a>
+    <a href="/admin/products?page=1" class="navbar-itemDash">Productos</a>
+    <a href="/admin/tickets" class="navbar-itemDash">Pedidos</a>
+    <a href="/admin/messages" class="navbar-itemDash">Mensajes</a>
+  </div>
+</div>
+
+<!-- Input de búsqueda -->
+<input type="text" id="search" class="form-control" placeholder="Buscar lawer por título..."
+  oninput="searchByFirst_name()">
+
+<!-- Selector de orden -->
+<select onchange="sortByColumn(this.value)" class="form-control">
+  <option value="2">Ordenar por Nombre</option>
+  <option value="4">Ordenar por Apellido</option>
+  <option value="5">Ordenar por Email</option>
+  <option value="6">Ordenar por última vez conectado</option>
+  <option value="7">Ordenar por rol</option>
+</select>
+
+<button class="btn btn-success btn-add" data-bs-toggle="modal" data-bs-target="#addlawerModal">Agregar nuevo
+  usuario</button>
+
+
+<div class="table-container">
+<table class="table table-striped">
+  <thead>
+    <tr>  
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Apellido</th>
+      <th>Email</th>
+      <th>Edad</th>
+      <th>última vez conectado</th>
+      <th>Rol</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each lawers}}
+    <tr>
+      <td>{{this._id}}</td>
+      <td>{{this.first_name}}</td>
+      <td>{{this.last_name}}</td>
+      <td>{{this.email}}</td>
+      <td>{{this.age}}</td>
+      <td>{{this.last_connection}}</td>
+      <td>{{this.role}}</td>
+      <td>
+        <button onclick='openEditModal({{json this}})' class="btn btn-primary">Editar</button>
+        <button onclick="deletelawer(event, '{{this._id}}')" class="btn btn-danger">Eliminar</button>
+        <button onclick="resetPassword(event, '{{this._id}}')" class="btn btn-secondary">Resetear password</button>
+
+      </td>
+    </tr>
+    {{/each}}
+</table>
+</div>
+
+<!-- Modal de edición de lawer (fuera del bucle) -->
+<div class="modal fade" id="editlawerModal" tabindex="-1" aria-labelledby="editlawerModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-first_name" id="editlawerModalLabel">Editar lawer</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form id="editlawerForm" enctype="multipart/form-data">
+        <div class="modal-body">
+          <!-- Campos del lawer -->
+          <input type="hidden" id="lawerId" name="lawerId" />
+          <div class="mb-3">
+            <label for="lawerFirst_name" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="lawerFirst_name" name="first_name" required>
+          </div>
+          <div class="mb-3">
+            <label for="lawerLast_name" class="form-label">Apellido</label>
+            <input class="form-control" id="lawerLast_name" name="last_name" required>
+          </div>
+          <div class="mb-3">
+            <label for="lawerEmail" class="form-label">Email</label>
+            <input type="email" class="form-control" id="lawerEmail" name="email" required>
+          </div>
+          <div class="mb-3">
+            <label for="lawerAge" class="form-label">Edad</label>
+            <input type="number" class="form-control" id="lawerAge" name="age" required>
+          </div>
+          <div class="mb-3">
+            <label for="lawerRole" class="form-label">Rol</label>
+            <select name="role" id="lawerRole" class="form-control" type="text">
+              <option value="lawer">lawer</option>
+              <option value="premium">Premium</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="submit" class="btn btn-primary">Guardar cambios</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de agregar usuario -->
+<div class="modal fade" id="addlawerModal" tabindex="-1" aria-labelledby="addlawerModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-first_name" id="addlawerModalLabel">Agregar Nuevo Usuario</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form id="addlawerForm" method="POST" action="/admin/lawers/add">
+        <div class="modal-body">
+          <!-- Campos del nuevo usuario -->
+          <div class="mb-3">
+            <label for="first_name" class="form-label">Nombre</label>
+            <input type="text" id="first_name" name="first_name" class="form-control" placeholder="Ingrese el nombre"
+              required>
+          </div>
+          <div class="mb-3">
+            <label for="last_name" class="form-label">Apellido</label>
+            <input type="text" id="last_name" name="last_name" class="form-control" placeholder="Ingrese el apellido"
+              required>
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" id="email" name="email" class="form-control" placeholder="Ingrese el email" required>
+          </div>
+          <div class="mb-3">
+            <label for="age" class="form-label">Edad</label>
+            <input type="number" id="age" name="age" class="form-control" placeholder="Ingrese la edad">
+          </div>
+          <div class="mb-3">
+            <label for="role" class="form-label">Rol</label>
+            <select name="role" id="role" class="form-control">
+              <option value="lawer">Usuario</option>
+              <option value="premium">Premium</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Contraseña</label>
+            <input type="password" id="password" name="password" class="form-control"
+              placeholder="Ingrese la contraseña">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="submit" class="btn btn-primary">Crear Usuario</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+</tbody>
+
+<div class="pagination">
+  {{#if hasPrevPage}}
+  <a href="?page={{prevPage}}">Anterior</a>
+  {{/if}}
+  {{#if hasNextPage}}
+  <a href="?page={{nextPage}}">Siguiente</a>
+  {{/if}}
+</div>

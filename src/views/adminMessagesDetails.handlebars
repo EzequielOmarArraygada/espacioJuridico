@@ -1,0 +1,360 @@
+<style>
+  body {
+    font-family: 'Arial', sans-serif;
+    background-color: #D9FFFF;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .navbarDash {
+    background-color: #fffefe;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 3%;
+  }
+
+  .navbar-leftDash {
+    display: flex;
+    align-items: center;
+  }
+
+  .navbar-logoDash img {
+    width: 50px;
+    height: auto;
+    margin-right: 20px;
+  }
+
+  .navbar-itemDash {
+    margin-right: 15px;
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+  }
+
+  .navbar-itemDash:last-child {
+    margin-right: 0;
+  }
+
+  .message-details-container {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .message-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .message-header h2 {
+    margin: 0;
+    color: #333;
+  }
+
+  .message-details {
+    margin: 10px 0;
+    color: #555;
+  }
+
+  .message-details p {
+    margin: 5px 0;
+  }
+
+  .message-products {
+    list-style-type: none;
+    padding: 0;
+    margin: 10px 0;
+  }
+
+  .message-products li {
+    background-color: #f9f9f9;
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+  }
+
+  .message-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+
+  .message-actions button,
+  .message-actions a {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  .btn-primary {
+    background-color: #007bff;
+    color: #fff;
+  }
+
+  .btn-secondary {
+    background-color: #6c757d;
+    color: #fff;
+  }
+
+  .btn-danger {
+    background-color: #dc3545;
+    color: #fff;
+  }
+
+  /* Estilos Responsivos */
+  @media (max-width: 768px) {
+    .message-details-container {
+      padding: 15px;
+    }
+
+    .message-header h2 {
+      font-size: 18px;
+    }
+  }
+
+  .btn-status {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #fff;
+  opacity: 0.6; /* Apagado por defecto */
+  transition: opacity 0.3s;
+}
+
+.btn-status.active {
+  opacity: 1; /* Encendido cuando está activo */
+}
+
+.btn-novisto {
+  background-color: orange;
+}
+
+.btn-enespera {
+  background-color: yellow;
+  color: #333; /* Texto oscuro para mejor legibilidad */
+}
+
+.btn-visto {
+  background-color: rgb(36, 123, 253);
+}
+
+.btn-contestado {
+  background-color: green;
+}
+
+.btn-spam {
+  background-color: red;
+}
+
+.btn-apagado {
+  background-color: grey;
+}
+.btn-back {
+  background-color: #007bff; /* Color azul */
+  color: #fff; /* Color del texto */
+  padding: 10px 20px; /* Espaciado */
+  border: none; /* Sin borde */
+  border-radius: 5px; /* Esquinas redondeadas */
+  cursor: pointer; /* Cambiar el cursor al pasar el ratón */
+  font-weight: bold; /* Texto en negrita */
+  transition: background-color 0.3s, transform 0.2s; /* Animaciones suaves */
+  text-decoration: none;
+}
+
+.btn-back:hover {
+  background-color: #0056b3; /* Color más oscuro al pasar el ratón */
+  transform: translateY(-2px); /* Elevar ligeramente el botón */
+}
+
+.btn-back:active {
+  transform: translateY(0); /* Regresar a la posición normal al hacer clic */
+}
+.btn-responder {
+  background-color: #8B5B29; /* marrón medieval elegante */
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  margin-top: 8px;
+  justify-self: center;
+}
+
+.btn-responder:hover {
+  background-color: #5B1F0F; /* tono más oscuro al pasar el mouse */
+  transform: translateY(-2px);
+}
+
+.btn-responder:active {
+  transform: translateY(0);
+}
+
+</style>
+
+<div class="navbarDash">
+  <div class="navbar-leftDash">
+    <div class="navbar-logoDash">
+      <img src="/assets/conf.png" alt="Logo">
+    </div>
+    <a href="/admin" class="navbar-itemDash">Dashboard</a>
+    <a href="/admin/lawers?page=1" class="navbar-itemDash">Usuarios</a>
+    <a href="/admin/products?page=1" class="navbar-itemDash">Productos</a>
+    <a href="/admin/tickets" class="navbar-itemDash">Pedidos</a>
+    <a href="/admin/messages" class="navbar-itemDash">Mensajes</a>
+  </div>
+</div>
+
+<div class="message-details-container">
+  <div class="message-header">
+    <h2>Detalles del mensaje</h2>
+    <a href="/admin/messages" class="btn-back">Volver</a>
+  </div>
+
+  <div class="message-details">
+        <p><strong>Cliente:</strong> {{message.client_name}}</p>
+        <p><strong>Email del cliente:</strong> {{message.client_email}}</p>
+        <p><strong>Fecha de mensaje:</strong> {{message.datetime}}</p>
+        <p><strong>Mensaje:</strong> {{message.message}}</p>
+  </div>
+
+  <div class="message-actions">
+  <button class="btn-status btn-novisto {{#ifEquals message.status 'NoVisto'}}active{{else}}btn-apagado{{/ifEquals}}" onclick="updateMessageStatus('NoVisto')">NoVisto</button>
+  <button class="btn-status btn-visto {{#ifEquals message.status 'Visto'}}active{{else}}btn-apagado{{/ifEquals}}" onclick="updateMessageStatus('Visto')">Visto</button>
+  <button class="btn-status btn-enespera {{#ifEquals message.status 'EnEspera'}}active{{else}}btn-apagado{{/ifEquals}}" onclick="updateMessageStatus('EnEspera')">EnEspera</button>
+  <button class="btn-status btn-spam {{#ifEquals message.status 'Spam'}}active{{else}}btn-apagado{{/ifEquals}}" onclick="updateMessageStatus('Spam')">Spam</button>
+  <button class="btn-status btn-contestado {{#ifEquals message.status 'Contestado'}}active{{else}}btn-apagado{{/ifEquals}}" onclick="updateMessageStatus('Contestado')">Contestado</button>
+  </div>
+  <div class="reply-toggle-container">
+  <button id="toggleReplyBtn" class="btn-responder" onclick="toggleReply()">Responder</button>
+  
+  <div id="replyForm" style="display: none; margin-top: 20px;">
+    <textarea id="replyMessage" placeholder="Escribe tu respuesta..." rows="5" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;"></textarea>
+    <button class="btn-primary" style="margin-top: 10px;" onclick="sendReply()">Enviar respuesta</button>
+  </div>
+</div>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  function toggleReply() {
+    const form = document.getElementById("replyForm");
+    form.style.display = form.style.display === "none" ? "block" : "none";
+  }
+
+  function sendReply() {
+  const message = document.getElementById("replyMessage").value.trim();
+  if (!message) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Mensaje vacío',
+      text: 'Por favor, escribe una respuesta antes de enviar.',
+      confirmButtonColor: '#8B5B29',
+    });
+    return;
+  }
+
+  const email = "{{message.client_email}}";
+  const name = "{{message.client_name}}";
+
+  fetch("/admin/messages/send-reply", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ to: email, name: name, message: message })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      Swal.fire({
+        icon: 'success',
+        title: 'Correo enviado',
+        text: 'La respuesta fue enviada con éxito.',
+        confirmButtonColor: '#8B5B29',
+      });
+      document.getElementById("replyForm").style.display = "none";
+      document.getElementById("replyMessage").value = "";
+      updateMessageStatus("Contestado");
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'No se pudo enviar el correo.',
+        confirmButtonColor: '#8B5B29',
+      });
+    }
+  })
+  .catch(err => {
+    console.error("Error:", err);
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Hubo un problema al enviar el correo.',
+      confirmButtonColor: '#8B5B29',
+    });
+  });
+}
+
+  
+  function updateMessageStatus(status) {
+  const messageId = "{{message._id}}";
+
+  fetch(`/admin/messages/details/updateMessageStatus`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ mid: messageId, status: status }),
+  })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Estado actualizado',
+          text: `El estado se cambió a "${status}" correctamente.`,
+          confirmButtonColor: '#8B5B29',
+        }).then(() => {
+          location.reload();
+        });
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudo actualizar el estado.',
+          confirmButtonColor: '#8B5B29',
+        });
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Hubo un error inesperado.',
+        confirmButtonColor: '#8B5B29',
+      });
+    });
+}
+</script>

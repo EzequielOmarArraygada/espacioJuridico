@@ -1,0 +1,337 @@
+<style>
+  body {
+    font-family: 'Arial', sans-serif;
+    background-color: #D9FFFF;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .navbarDash {
+    background-color: #fffefe;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 3%;
+  }
+
+  .navbar-leftDash {
+    display: flex;
+    align-items: center;
+  }
+
+  .navbar-logoDash img {
+    width: 50px;
+    height: auto;
+    margin-right: 20px;
+  }
+
+  .navbar-itemDash {
+    margin-right: 15px;
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+  }
+
+  .navbar-itemDash:last-child {
+    margin-right: 0;
+  }
+
+  .ticket-details-container {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .ticket-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .ticket-header h2 {
+    margin: 0;
+    color: #333;
+  }
+
+  .ticket-details {
+    margin: 10px 0;
+    color: #555;
+  }
+
+  .ticket-details p {
+    margin: 5px 0;
+  }
+
+  .ticket-products {
+    list-style-type: none;
+    padding: 0;
+    margin: 10px 0;
+  }
+
+  .ticket-products li {
+    background-color: #f9f9f9;
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+  }
+
+  .ticket-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+
+  .ticket-actions button,
+  .ticket-actions a {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  .btn-primary {
+    background-color: #007bff;
+    color: #fff;
+  }
+
+  .btn-secondary {
+    background-color: #6c757d;
+    color: #fff;
+  }
+
+  .btn-danger {
+    background-color: #dc3545;
+    color: #fff;
+  }
+
+  /* Estilos Responsivos */
+  @media (max-width: 768px) {
+    .ticket-details-container {
+      padding: 15px;
+    }
+
+    .ticket-header h2 {
+      font-size: 18px;
+    }
+  }
+
+  .btn-status {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #fff;
+    opacity: 0.6;
+    /* Apagado por defecto */
+    transition: opacity 0.3s;
+  }
+
+  .btn-status.active {
+    opacity: 1;
+    /* Encendido cuando está activo */
+  }
+
+  .btn-pendiente {
+    background-color: orange;
+  }
+
+  .btn-preparando {
+    background-color: yellow;
+    color: #333;
+    /* Texto oscuro para mejor legibilidad */
+  }
+
+  .btn-completado {
+    background-color: rgb(36, 123, 253);
+  }
+
+  .btn-aprobado {
+    background-color: green;
+  }
+
+  .btn-cancelado {
+    background-color: red;
+  }
+
+  .btn-apagado {
+    background-color: grey;
+  }
+
+  .btn-back {
+    background-color: #007bff;
+    /* Color azul */
+    color: #fff;
+    /* Color del texto */
+    padding: 10px 20px;
+    /* Espaciado */
+    border: none;
+    /* Sin borde */
+    border-radius: 5px;
+    /* Esquinas redondeadas */
+    cursor: pointer;
+    /* Cambiar el cursor al pasar el ratón */
+    font-weight: bold;
+    /* Texto en negrita */
+    transition: background-color 0.3s, transform 0.2s;
+    /* Animaciones suaves */
+    text-decoration: none;
+  }
+
+  .btn-back:hover {
+    background-color: #0056b3;
+    /* Color más oscuro al pasar el ratón */
+    transform: translateY(-2px);
+    /* Elevar ligeramente el botón */
+  }
+
+  .btn-back:active {
+    transform: translateY(0);
+    /* Regresar a la posición normal al hacer clic */
+  }
+</style>
+
+<div class="navbarDash">
+  <div class="navbar-leftDash">
+    <div class="navbar-logoDash">
+      <img src="/assets/conf.png" alt="Logo">
+    </div>
+    <a href="/admin" class="navbar-itemDash">Dashboard</a>
+    <a href="/admin/lawers?page=1" class="navbar-itemDash">Usuarios</a>
+    <a href="/admin/products?page=1" class="navbar-itemDash">Productos</a>
+    <a href="/admin/tickets" class="navbar-itemDash">Pedidos</a>
+    <a href="/admin/messages" class="navbar-itemDash">Mensajes</a>
+  </div>
+</div>
+
+<div class="ticket-details-container">
+  <div class="ticket-header">
+    <h2>Detalles del Ticket</h2>
+    <a href="/admin/tickets" class="btn-back">Volver</a>
+  </div>
+
+  <div class="ticket-details">
+    <p><strong>ID del Ticket:</strong> {{ticket._id}}</p>
+    <p><strong>Comprador:</strong> {{ticket.purchaser.email}}</p>
+    <p><strong>Código:</strong> {{ticket.code}}</p>
+    <p><strong>Fecha de Compra:</strong> {{ticket.purchase_datetime}}</p>
+    <p><strong>Monto Total:</strong> ${{ticket.totalAmount}}</p>
+    <p><strong>Estado:</strong> {{ticket.status}}</p>
+  </div>
+
+  <h4>Productos:</h4>
+  {{#if ticket.products}}
+  <ul class="ticket-products">
+    {{#each ticket.products}}
+    <li>
+      <strong>{{this.title}}</strong> - Cantidad: {{this.quantity}} - Precio: ${{this.price}}
+    </li>
+    {{/each}}
+  </ul>
+  {{else}}
+  <p>No hay productos en este ticket.</p>
+  {{/if}}
+
+  <div class="ticket-actions">
+    <button
+      class="btn-status btn-pendiente {{#ifEquals ticket.status 'Pendiente'}}active{{else}}btn-apagado{{/ifEquals}}"
+      onclick="updateTicketStatus('Pendiente')">Pendiente</button>
+    <button class="btn-status btn-aprobado {{#ifEquals ticket.status 'Aprobado'}}active{{else}}btn-apagado{{/ifEquals}}"
+      onclick="updateTicketStatus('Aprobado')">Aprobado</button>
+    <button
+      class="btn-status btn-preparando {{#ifEquals ticket.status 'Preparando'}}active{{else}}btn-apagado{{/ifEquals}}"
+      onclick="updateTicketStatus('Preparando')">Preparando</button>
+    <button
+      class="btn-status btn-completado {{#ifEquals ticket.status 'Completado'}}active{{else}}btn-apagado{{/ifEquals}}"
+      onclick="updateTicketStatus('Completado')">Completado</button>
+    <button
+      class="btn-status btn-cancelado {{#ifEquals ticket.status 'Cancelado'}}active{{else}}btn-apagado{{/ifEquals}}"
+      onclick="updateTicketStatus('Cancelado')">Cancelado</button>
+  </div>
+  <div style="margin-top: 30px;">
+    <button id="toggleReplyBtn" class="btn-primary">Responder</button>
+
+    <div id="replyForm" style="display: none; margin-top: 15px;">
+      <textarea id="replyMessage" rows="5"
+        style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;"
+        placeholder="Escribe tu respuesta aquí..."></textarea>
+      <button class="btn-secondary" style="margin-top: 10px;" onclick="sendReply()">Enviar</button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  const toggleBtn = document.getElementById('toggleReplyBtn');
+  const replyForm = document.getElementById('replyForm');
+
+  toggleBtn.addEventListener('click', () => {
+    replyForm.style.display = replyForm.style.display === 'none' ? 'block' : 'none';
+  });
+
+  function sendReply() {
+    const message = document.getElementById('replyMessage').value;
+    const email = "{{ticket.purchaser.email}}"; // El destinatario
+
+    if (!message.trim()) {
+      alert("El mensaje no puede estar vacío.");
+      return;
+    }
+
+    fetch('/api/mail/send-reply', { // Ajusta esta ruta según tu servicio de mailing
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        to: email,
+        subject: 'Respuesta a tu ticket',
+        message: message
+      })
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          alert('Respuesta enviada con éxito');
+          document.getElementById('replyMessage').value = '';
+          replyForm.style.display = 'none';
+        } else {
+          alert('Error al enviar el mensaje');
+        }
+      })
+      .catch(err => {
+        console.error('Error al enviar:', err);
+        alert('Error al enviar el mensaje');
+      });
+  }
+
+  function updateTicketStatus(status) {
+    const ticketId = "{{ticket._id}}"; // Obtener el ID del ticket
+    fetch(`/admin/tickets/details/updateStatus`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ tid: ticketId, status: status }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          alert('Estado actualizado con éxito');
+          location.reload(); // Recargar la página para ver el estado actualizado
+        } else {
+          alert('Hubo un error al actualizar el estado');
+        }
+      })
+      .catch(error => console.error('Error:', error));
+  }
+</script>

@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carrito de Compras</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      line-height: 1.6;
+      background-color: #E7E2D1;
+      display: flex;
+    }
+
+    h1 {
+      color: #333;
+      text-align: center;
+    }
+
+    .Cases-container {
+      max-width: 900px;
+      /* Controla el ancho máximo del contenedor */
+      margin: 0 auto;
+    }
+
+    .Cases-items {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .Cases-item {
+      background-color: #C2B7A0;
+      border-radius: 12px;
+      /* Mayor curvatura para una apariencia más suave */
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+      /* Sombra más notable */
+      padding: 20px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .Cases-item-details {
+      flex-grow: 1;
+      margin-right: 10px;
+    }
+
+    .DetailImg {
+      width: 120px;
+      /* Tamaño más grande para la imagen */
+      height: auto;
+      border-radius: 8px;
+      /* Añade un borde redondeado a la imagen */
+      margin-right: 20px;
+    }
+
+    .Cases-item h2 {
+      color: #333;
+      font-size: 1.4em;
+      margin-bottom: 5px;
+    }
+
+    .Cases-item p {
+      color: #666;
+      margin-bottom: 5px;
+    }
+
+    .checkout-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      /* Mayor espacio entre los botones */
+      margin-top: 30px;
+    }
+
+    .checkoutButton {
+      background-color: #000000;
+      color: #ffffff;
+      border: none;
+      padding: 12px 28px;
+      /* Botones más grandes */
+      cursor: pointer;
+      border-radius: 6px;
+      transition: background-color 0.3s ease;
+      font-size: 1.1em;
+      /* Aumenta el tamaño de la fuente */
+    }
+
+    .checkoutButton:hover {
+      background-color: #FFF0CF;
+      color: #333;
+      /* Cambia el color del texto al hacer hover */
+    }
+
+    .remove-item {
+      background-color: #4e0202;
+      color: #ffffff;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: background-color 0.3s ease;
+    }
+
+    .remove-item:hover {
+      background-color: #654604;
+    }
+
+    @media (max-width: 600px) {
+      .Cases-container {
+        width: 100%;
+      }
+
+      .DetailImg {
+        width: 80px;
+        margin-right: 15px;
+      }
+
+      .Cases-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .Cases-item-details {
+        margin-bottom: 10px;
+        margin-right: 0;
+      }
+
+      .remove-item {
+        align-self: flex-end;
+      }
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.4);
+      padding-top: 60px;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal-content {
+      background-color: #D9FFFF;
+      margin: auto;
+      padding: 20px;
+      border: none;
+      width: 80%;
+      max-width: 600px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      position: relative;
+      text-align: center;
+      animation: modalShow 0.5s ease-out;
+    }
+
+    @keyframes modalShow {
+      from {
+        transform: translateY(-50px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .close {
+      color: #aaa;
+      font-size: 28px;
+      font-weight: bold;
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: #333;
+      text-decoration: none;
+    }
+
+    .modal-content h2 {
+      color: #333;
+      margin-bottom: 15px;
+    }
+
+    .modal-content p {
+      color: #666;
+    }
+
+    .modal-content ul {
+      list-style-type: none;
+      padding: 0;
+      text-align: left;
+    }
+
+    .modal-content ul li {
+      margin-bottom: 10px;
+      color: #333;
+      display: flex;
+      align-items: center;
+    }
+
+    .modal-content ul li img {
+      width: 40px;
+      height: 40px;
+      margin-right: 10px;
+      border-radius: 4px;
+    }
+  </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('DOM cargado');
+
+      // Actualizar la acción del botón "Finalizar Compra" para crear la orden en MP y redirigir
+      document.getElementById('checkoutButton').addEventListener('click', async function () {
+        try {
+          const CasesId = '{{CasesId}}';
+          // Llamamos al endpoint que crea la orden en MercadoPago
+          const response = await fetch(`/api/cases/createOrder/${CasesId}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            // Redirigir al usuario a la URL de pago de MercadoPago (init_point)
+            window.location.href = data.init_point;
+          } else {
+            console.error('Error al crear la orden:', data.error);
+            Swal.fire('', 'Error al crear la orden', 'error');
+          }
+        } catch (error) {
+          console.error('Error al procesar la orden:', error);
+          Swal.fire('', 'Error al procesar la orden', 'error');
+        }
+      });
+
+      // Añadir el evento para eliminar artículos
+      document.querySelectorAll('.remove-item').forEach(button => {
+        button.addEventListener('click', async (event) => {
+          const productId = event.target.dataset.productId;
+          const CasesId = '{{CasesId}}';
+          try {
+            const response = await fetch(`/api/cases/${CasesId}/products/${productId}`, {
+              method: 'DELETE'
+            });
+            if (response.ok) {
+              location.reload();
+            } else {
+              console.error('Error al eliminar el artículo del carrito');
+            }
+          } catch (error) {
+            console.error('Error al comunicarse con el servidor', error);
+          }
+        });
+      });
+
+      // Añadir el evento para vaciar el carrito
+      document.getElementById('empty-Cases').addEventListener('click', async () => {
+        const CasesId = '{{CasesId}}';
+
+        try {
+          const response = await fetch(`/api/cases/${CasesId}`, {
+            method: 'DELETE'
+          });
+          if (response.ok) {
+            location.reload();
+          } else {
+            console.error('Error al vaciar el carrito');
+          }
+        } catch (error) {
+          console.error('Error al comunicarse con el servidor', error);
+        }
+      });
+
+      // Actualización del conteo del carrito
+      const CasesId = '{{CasesId}}';
+
+      async function updateCasesCount() {
+        console.log('Ejecutando updateCasesCount');
+        try {
+          const response = await fetch(`/api/cases/${CasesId}/count`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+          });
+          if (response.ok) {
+            const Cases = await response.json();
+            const CasesCount = Cases.Cases.products.reduce((total, product) => total + product.quantity, 0);
+            const CasesCountGreaterThanZero = CasesCount > 0;
+            document.getElementById('Cases-count').innerText = CasesCount;
+            document.getElementById('Cases-count').style.display = CasesCountGreaterThanZero ? 'inline-block' : 'none';
+          }
+        } catch (error) {
+          console.error('Error al obtener el conteo del carrito', error);
+        }
+      }
+      updateCasesCount();
+    });
+  </script>
+</head>
+
+<body>
+  <div class="Cases-container">
+    <ul class="Cases-items">
+      {{#each productsDetails}}
+      <li class="Cases-item">
+        <div class="Cases-item-details">
+          <h2>{{this.title}}</h2>
+          <p>Precio: ${{this.price}}</p>
+          <p>Cantidad: {{this.quantity}}</p>
+        </div>
+        <img src="{{this.thumbnail}}" alt="DetailImg" class="DetailImg">
+        <button class="remove-item" data-product-id="{{this._id}}">X</button>
+      </li>
+      {{/each}}
+    </ul>
+    <div>
+      <strong>Total:</strong> ${{totalPrice}}
+    </div>
+    <div class="checkout-buttons">
+      <button class="checkoutButton" id="empty-Cases">Vaciar Carrito</button>
+      <!-- Botón para finalizar compra (redirige a MP) -->
+      <button class="checkoutButton" id="checkoutButton">Finalizar Compra</button>
+    </div>
+  </div>
+
+  <!-- Modal (si deseas mantenerlo para otras notificaciones, pero ya no se usa para finalizar compra) -->
+  <div id="ticketModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>¡Gracias por comprar con nosotros!</h2>
+      <p>Detalles de la compra:</p>
+      <ul id="ticketDetails"></ul>
+      <p>Total: <span id="ticketTotal"></span></p>
+      <h5>Recibirás un email a tu correo con los datos de la compra</h5>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+</body>
+
+</html>

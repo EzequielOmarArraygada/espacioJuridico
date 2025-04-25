@@ -1,0 +1,324 @@
+<style>
+  body {
+    font-family: 'Arial', sans-serif;
+    background-color: #F0F8FF;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .navbarDash {
+    background-color: #fffefe;
+    /* Cambiamos a blanco */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 3%;
+  }
+
+  .navbar-leftDash {
+    display: flex;
+    align-items: center;
+  }
+
+  .navbar-logoDash img {
+    width: 50px;
+    /* Ajusta el tamaño del logo según sea necesario */
+    height: auto;
+    margin-right: 20px;
+  }
+
+  .navbar-itemDash {
+    margin-right: 15px;
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+  }
+
+  .navbar-itemDash:last-child {
+    margin-right: 0;
+  }
+
+  #search {
+    margin-bottom: 20px;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  .ticket-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+
+  .ticket-card {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    width: calc(33.333% - 20px);
+    transition: transform 0.3s, box-shadow 0.3s;
+    text-decoration: none;
+    /* Para que no aparezca el subrayado por defecto en los enlaces */
+    color: inherit;
+    /* Para heredar el color del texto de la tarjeta */
+    display: block;
+    /* Para hacer toda la tarjeta clicable */
+  }
+
+  .ticket-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  }
+
+  .ticket-card h3 {
+    margin-top: 0;
+    font-size: 20px;
+    color: #333;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+  }
+
+  .ticket-details {
+    margin: 10px 0;
+    color: #555;
+    font-size: 14px;
+  }
+
+  .ticket-products {
+    list-style-type: none;
+    padding: 0;
+    margin: 10px 0;
+  }
+
+  .ticket-products li {
+    background-color: #f9f9f9;
+    padding: 8px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    border-left: 4px solid #007bff;
+    color: #333;
+    font-size: 14px;
+  }
+
+  .ticket-actions a {
+    text-decoration: underline;
+    margin-right: 10px;
+    color: #007bff;
+    font-weight: bold;
+    transition: color 0.3s ease;
+  }
+
+  .ticket-actions a:hover {
+    color: #0056b3;
+  }
+
+  /* Estilos Responsivos */
+  @media (max-width: 1024px) {
+    .ticket-card {
+      width: calc(50% - 20px);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .ticket-card {
+      width: calc(100% - 20px);
+    }
+  }
+
+  .btn-status {
+    font-size: 12px;
+    padding: 4px 8px;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    color: #fff;
+    opacity: 0.4;
+    pointer-events: none;
+    /* deshabilitado por defecto */
+    transition: all 0.3s ease;
+    white-space: nowrap;
+  }
+
+  .btn-status.active {
+    opacity: 1;
+  }
+
+  .btn-status:not(.active) {
+    filter: grayscale(100%) brightness(1.2);
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .btn-pendiente {
+    background-color: orange;
+  }
+
+  .btn-preparando {
+    background-color: yellow;
+    color: #333;
+  }
+
+  .btn-aprobado {
+    background-color: green;
+  }
+
+  .btn-completado {
+    background-color: royalblue;
+  }
+
+  .btn-cancelado {
+    background-color: red;
+  }
+
+  .ticket-status-indicators {
+    display: flex;
+    flex-wrap: nowrap;
+    /* evita que se vayan a varias líneas */
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 4px;
+    /* separación entre botones */
+    overflow-x: auto;
+    /* por si no entra todo en pantallas pequeñas */
+  }
+
+  /* Estilo para el botón de mostrar los datos de pago */
+.toggle-payment-info {
+  background-color: #5B1F0F; /* tono marrón medieval */
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.toggle-payment-info:hover {
+  background-color: #8B5B29;
+  transform: scale(1.03);
+}
+
+.toggle-payment-info .arrow {
+  margin-right: 10px;
+}
+
+.payment-details {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Resalta el nombre del campo de pago */
+.payment-info p strong {
+  color: #007bff;
+}
+
+
+
+</style>
+
+<script>
+  function handleCardClick(event, ticketId) {
+    // Si el click vino desde el botón de "Ver Datos de Pago", no redirecciona
+    if (event.target.closest('.toggle-payment-info')) return;
+
+    // Si no, redirige al detalle
+    window.location.href = `/admin/tickets/details/${ticketId}`;
+  }
+
+  function togglePaymentInfo(ticketId) {
+    const paymentInfo = document.getElementById('payment-info-' + ticketId);
+    const arrow = document.querySelector(`#toggle-btn-${ticketId} .arrow`);
+    if (paymentInfo.style.display === 'none' || paymentInfo.style.display === '') {
+      paymentInfo.style.display = 'block';
+      arrow.textContent = '▲';
+    } else {
+      paymentInfo.style.display = 'none';
+      arrow.textContent = '▼';
+    }
+  }
+</script>
+
+
+<div class="navbarDash">
+  <div class="navbar-leftDash">
+    <div class="navbar-logoDash">
+      <img src="/assets/conf.png" alt="Logo">
+    </div>
+    <a href="/admin" class="navbar-itemDash">Dashboard</a>
+    <a href="/admin/lawers?page=1" class="navbar-itemDash">Usuarios</a>
+    <a href="/admin/products?page=1" class="navbar-itemDash">Productos</a>
+    <a href="/admin/tickets" class="navbar-itemDash">Pedidos</a>
+    <a href="/admin/messages" class="navbar-itemDash">Mensajes</a>
+  </div>
+</div>
+
+<input type="text" id="search" placeholder="Buscar ticket...">
+
+<div class="ticket-container">
+  {{#each tickets}}
+<div class="ticket-card" onclick="handleCardClick(event, '{{this._id}}')">
+    <h3>Ticket ID: {{this._id}}</h3>
+    <div>
+      <div class="ticket-status-indicators">
+        <button class="btn-status btn-pendiente {{#ifEquals this.status 'Pendiente'}}active{{else}}btn-apagado{{/ifEquals}}">Pendiente</button>
+        <button class="btn-status btn-aprobado {{#ifEquals this.status 'Aprobado'}}active{{else}}btn-apagado{{/ifEquals}}">Aprobado</button>
+        <button class="btn-status btn-preparando {{#ifEquals this.status 'Preparando'}}active{{else}}btn-apagado{{/ifEquals}}">Preparando</button>
+        <button class="btn-status btn-completado {{#ifEquals this.status 'Completado'}}active{{else}}btn-apagado{{/ifEquals}}">Completado</button>
+        <button class="btn-status btn-cancelado {{#ifEquals this.status 'Cancelado'}}active{{else}}btn-apagado{{/ifEquals}}">Cancelado</button>
+      </div>
+      <div class="ticket-details">
+        <p><strong>Comprador:</strong> {{this.purchaser}}</p>
+        <p><strong>Código:</strong> {{this.code}}</p>
+        <p><strong>Fecha de Compra:</strong> {{this.purchase_datetime}}</p>
+      </div>
+      <h4>Productos:</h4>
+      {{#if this.products}}
+      <ul class="ticket-products">
+        {{#each this.products}}
+        <li>{{this.title}} - Cantidad: {{this.quantity}} - Precio: ${{this.price}}</li>
+        {{/each}}
+      </ul>
+      {{else}}
+      <p>No hay productos en este ticket.</p>
+      {{/if}}
+      <p><strong>Monto Total:</strong> ${{this.totalAmount}}</p>
+    </div>
+
+    {{#if this.paymentInf}} <!-- Verifica si hay datos de pago -->
+  <button id="toggle-btn-{{this._id}}" class="toggle-payment-info" onclick="togglePaymentInfo('{{this._id}}')">
+    <span class="arrow">&#9660;</span> Ver Datos de Pago
+  </button>
+  <div class="payment-info" id="payment-info-{{this._id}}" style="display: none;">
+    <h4>Datos de Pago:</h4>
+    <p><strong>Método de Pago:</strong> {{this.paymentInf.method}}</p>
+    <p><strong>Fecha de Pago:</strong> {{this.paymentInf.paymentDate}}</p>
+    <p><strong>Tarjeta (últimos 4 dígitos):</strong> {{this.paymentInf.card.lastFourDigits}}</p>
+    <p><strong>Cuotas:</strong> {{this.paymentInf.card.installments}}</p>
+    <p><strong>Emisor:</strong> {{this.paymentInf.card.issuerName}}</p>
+  </div>
+{{/if}}
+
+   </div>
+  {{/each}}
+</div>

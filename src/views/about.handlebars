@@ -1,0 +1,343 @@
+<section class="nosotros">
+  <div class="contenedor">
+    <div class="texto">
+      <p>En tierras antiguas, donde los bosques susurran leyendas y las estrellas guían a los errantes, nació <strong>Ymir</strong>.</p>
+      <p>Forjamos más que objetos: tallamos sueños en madera, templamos el acero con historias y tejemos con hilos encantados el espíritu de otra era.</p>
+      <p>Cada espada, cada grimorio, cada vestimenta que ves, no es solo un producto. Es una reliquia de un mundo donde lo mágico y lo humano caminaban juntos.</p>
+      <p>Somos hijos de la fantasía, guardianes de lo artesanal, artesanos del ayer y soñadores del mañana. Bienvenidos a <strong>Ymir</strong>, donde la historia cobra vida y la fantasía se vuelve real.</p>
+      <p class="frase-final">⚔️ Aquí no solo compras… eliges tu destino.</p>
+    </div>
+
+    <div class="galeria">
+      <div class="video-contenedor">
+        <video class="video-medieval" id="videoMedieval" autoplay muted playsinline>
+          <source src="/assets/video1.mp4" type="video/mp4">
+          Tu navegador no soporta video HTML5.
+        </video>
+        <img src="/assets/respaldoVideo.jpg" alt="Imagen de respaldo" class="imagen-fallback" id="fallbackImagen">
+      </div>
+
+      <div class="carousel">
+        <button class="carousel-btn prev">❮</button>
+        <img src="/assets/nosotros1.jpg" alt="Galería 1" class="carousel-img" id="galeriaImg">
+        <button class="carousel-btn next">❯</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Modal -->
+<div class="modal" id="galeriaModal">
+  <span class="cerrar-modal" id="cerrarModal">×</span>
+  <button class="modal-btn modal-prev" id="modalPrev">❮</button>
+  <img class="modal-contenido" id="imagenModal">
+  <button class="modal-btn modal-next" id="modalNext">❯</button>
+</div>
+
+<!-- Tipografía -->
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const CasesId = '{{lawer.Cases}}';
+     async function updateCasesCount() {
+                try {
+                    const response = await fetch(`/api/cases/${CasesId}/count`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                    });
+                    if (response.ok) {
+                        const Cases = await response.json();
+                        const CasesCount = Cases.Cases.products.reduce((total, product) => total + product.quantity, 0);
+                        const CasesCountGreaterThanZero = CasesCount > 0;
+                        document.getElementById('Cases-count').innerText = CasesCount;
+                        document.getElementById('Cases-count').style.display = CasesCountGreaterThanZero ? 'inline-block' : 'none';
+                    }
+                } catch (error) {
+                    console.error('Error al obtener el conteo del carrito', error);
+                }
+            }
+
+            if (CasesId != '') {
+                document.getElementById('goToCasesButton').addEventListener('click', () => {
+                    const CasesId = '{{lawer.Cases}}';
+                    window.location.href = `/api/cases/${CasesId}`;
+                });
+
+                updateCasesCount();
+            }
+  });
+</script>
+
+<style>
+.nosotros {
+  background-color: #E7E2D1;
+  color: #5B1F0F;
+  font-family: 'Cinzel', serif;
+  padding: 4rem 2rem;
+  border-top: 5px solid #8B5B29;
+}
+
+.nosotros .contenedor {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.nosotros h2 {
+  font-size: 2.5rem;
+  border-bottom: 2px solid #8B5B29;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.nosotros .texto p {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  line-height: 1.8;
+}
+
+.nosotros .frase-final {
+  font-weight: bold;
+  font-style: italic;
+  font-size: 1.3rem;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.video-contenedor {
+  position: relative;
+  width: 100%;
+  min-height: 300px; 
+}
+
+.video-medieval,
+.imagen-fallback {
+  width: 100%;
+  height: auto;
+  border: 3px solid #C2B7A0;
+  border-radius: 16px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+  display: block;
+}
+
+.imagen-fallback {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: none;
+}
+
+.carousel {
+  position: relative;
+  width: 100%;
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.carousel-img {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  border: 3px solid #C2B7A0;
+  border-radius: 16px;
+  cursor: pointer;
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+  transition: transform 0.3s ease;
+}
+
+.carousel-img:hover {
+  transform: scale(1.03);
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #8B5B29;
+  color: white;
+  border: none;
+  font-size: 2rem;
+  padding: 0 0.5rem;
+  cursor: pointer;
+  z-index: 2;
+  border-radius: 10px;
+  opacity: 0.8;
+}
+
+.carousel-btn:hover {
+  background: #5B1F0F;
+}
+
+.prev {
+  left: 10px;
+}
+
+.next {
+  right: 10px;
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  padding-top: 80px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.9);
+  text-align: center;
+}
+
+.modal-contenido {
+  margin: auto;
+  display: block;
+  max-width: 90%;
+  max-height: 80%;
+  border-radius: 16px;
+  box-shadow: 0 0 15px rgba(255,255,255,0.2);
+}
+
+.cerrar-modal {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  color: #E7E2D1;
+  font-size: 40px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.modal-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 3rem;
+  color: #E7E2D1;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 1001;
+  lawer-select: none;
+}
+
+.modal-btn:hover {
+  color: #fff;
+}
+
+.modal-prev {
+  left: 20px;
+}
+
+.modal-next {
+  right: 20px;
+}
+
+@media (min-width: 768px) {
+  .nosotros .contenedor {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .nosotros .texto {
+    width: 55%;
+  }
+
+  .nosotros .galeria {
+    width: 40%;
+  }
+}
+</style>
+
+<script>
+const video = document.getElementById("videoMedieval");
+const fallbackImg = document.getElementById("fallbackImagen");
+const galeriaImg = document.getElementById("galeriaImg");
+const modal = document.getElementById("galeriaModal");
+const modalImg = document.getElementById("imagenModal");
+const cerrarModal = document.getElementById("cerrarModal");
+const modalPrev = document.getElementById("modalPrev");
+const modalNext = document.getElementById("modalNext");
+
+const imagenes = [
+  "/assets/nosotros1.jpg",
+  "/assets/nosotros2.jpg",
+  "/assets/nosotros3.jpg",
+  "/assets/nosotros4.jpg",
+  "/assets/nosotros5.jpg",
+  "/assets/nosotros6.jpg",
+  "/assets/nosotros7.jpg",
+  "/assets/nosotros8.jpg",
+  "/assets/nosotros9.jpg",
+  "/assets/nosotros10.jpg",    
+];
+let index = 0;
+
+// Al terminar el video, mostrar imagen de respaldo
+video.addEventListener("ended", () => {
+  video.style.display = "none";
+  fallbackImg.style.display = "block";
+});
+
+// Si se hace clic en la imagen de respaldo, volver a mostrar el video y reproducirlo
+fallbackImg.addEventListener("click", () => {
+  fallbackImg.style.display = "none";
+  video.style.display = "block";
+  video.currentTime = 0;
+  video.play();
+});
+
+// Botones del carrusel
+document.querySelector(".prev").addEventListener("click", () => {
+  index = (index - 1 + imagenes.length) % imagenes.length;
+  galeriaImg.src = imagenes[index];
+});
+
+document.querySelector(".next").addEventListener("click", () => {
+  index = (index + 1) % imagenes.length;
+  galeriaImg.src = imagenes[index];
+});
+
+// Galería automática
+setInterval(() => {
+  if (video.style.display === "none") {
+    index = (index + 1) % imagenes.length;
+    galeriaImg.src = imagenes[index];
+  }
+}, 4000);
+
+// Modal
+galeriaImg.addEventListener("click", () => {
+  modal.style.display = "block";
+  modalImg.src = imagenes[index];
+});
+
+cerrarModal.addEventListener("click", () => {
+  modal.style.display = "none";
+});
+
+window.addEventListener("click", (e) => {
+  if (e.target === modal) {
+    modal.style.display = "none";
+  }
+});
+
+// Navegación dentro del modal
+modalPrev.addEventListener("click", () => {
+  index = (index - 1 + imagenes.length) % imagenes.length;
+  modalImg.src = imagenes[index];
+});
+
+modalNext.addEventListener("click", () => {
+  index = (index + 1) % imagenes.length;
+  modalImg.src = imagenes[index];
+});
+</script>
